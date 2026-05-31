@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import MyFooter from '@/components/ui/Footer/myfooter';
 import { Project } from '@/data/projects';
+import { competenceById, realisationFor } from '@/data/competences';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -164,19 +165,35 @@ export default function ProjectPageClient({ project, otherProjects, projectId }:
                 <h2 className="text-xl font-bold mb-4">Détails</h2>
                 
                 <div className="space-y-4">
-                  {/* Skills */}
+                  {/* Compétences Bloc 1 */}
                   <div>
-                    <h3 className="text-sm uppercase text-gray-400 mb-2">Compétences</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {project.skills.map((skill, index) => (
-                        <span 
-                          key={index} 
-                          className={`${skill.color} text-white text-xs px-2 py-1 rounded-full`}
-                        >
-                          {skill.name}
-                        </span>
-                      ))}
+                    <h3 className="text-sm uppercase text-gray-400 mb-3">Compétences Bloc 1 mobilisées</h3>
+                    <div className="space-y-3">
+                      {project.competencyIds.map((cid) => {
+                        const c = competenceById(cid);
+                        if (!c) return null;
+                        const r = realisationFor(cid, project.id);
+                        return (
+                          <div key={cid} className="rounded-lg border border-white/10 bg-white/5 p-3">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full bg-gradient-to-r ${c.color} text-white`}>
+                                {c.code}
+                              </span>
+                              <span className="text-sm font-medium text-white">{c.title}</span>
+                            </div>
+                            <p className="mt-1 text-xs text-gray-400 leading-relaxed">
+                              {r?.description ?? c.description}
+                            </p>
+                          </div>
+                        );
+                      })}
                     </div>
+                    {project.skills.length > 0 && (
+                      <p className="mt-3 text-[11px] text-gray-500">
+                        <span className="uppercase tracking-wide">Stack</span>{' '}
+                        {project.skills.map((s) => s.name).join(' · ')}
+                      </p>
+                    )}
                   </div>
                   
                   {/* Links */}
@@ -237,15 +254,18 @@ export default function ProjectPageClient({ project, otherProjects, projectId }:
                       />
                       <div>
                         <h3 className="font-medium">{otherProject.title}</h3>
-                        <div className="flex mt-1 space-x-1">
-                          {otherProject.skills.slice(0, 2).map((skill, index) => (
-                            <span 
-                              key={index} 
-                              className={`${skill.color} text-white text-[10px] px-1 rounded-full`}
-                            >
-                              {skill.name}
-                            </span>
-                          ))}
+                        <div className="flex mt-1 flex-wrap gap-1">
+                          {otherProject.competencyIds.slice(0, 4).map((cid) => {
+                            const c = competenceById(cid);
+                            return c ? (
+                              <span
+                                key={cid}
+                                className={`bg-gradient-to-r ${c.color} text-white text-[10px] font-mono px-1.5 py-0.5 rounded-full`}
+                              >
+                                {c.id}
+                              </span>
+                            ) : null;
+                          })}
                         </div>
                       </div>
                     </Link>

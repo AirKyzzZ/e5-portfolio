@@ -11,6 +11,7 @@ export interface Competence {
   code: string;
   title: string;
   description: string;
+  officialBullets: string[];
   icon: string;
   color: string;
   realisations: Realisation[];
@@ -23,6 +24,14 @@ export const competences: Competence[] = [
     title: "Gérer le patrimoine informatique",
     description:
       "Recenser et identifier les ressources numériques, exploiter des référentiels et normes, mettre en place les niveaux d'habilitation, vérifier la continuité des services, gérer les sauvegardes.",
+    officialBullets: [
+      "Recenser et identifier les ressources numériques",
+      "Exploiter des référentiels, normes et standards adoptés par le prestataire informatique",
+      "Mettre en place et vérifier les niveaux d'habilitation associés à un service",
+      "Vérifier les conditions de la continuité d'un service informatique",
+      "Gérer des sauvegardes",
+      "Vérifier le respect des règles d'utilisation des ressources numériques",
+    ],
     icon: "Database",
     color: "from-blue-500 to-cyan-500",
     realisations: [
@@ -48,6 +57,11 @@ export const competences: Competence[] = [
     title: "Répondre aux incidents et aux demandes",
     description:
       "Collecter, suivre et orienter des demandes, traiter les incidents concernant les services réseau, système et applicatifs, assurer la maintenance corrective et évolutive.",
+    officialBullets: [
+      "Collecter, suivre et orienter des demandes",
+      "Traiter des demandes concernant les services réseau et système, applicatifs",
+      "Traiter des demandes concernant les applications",
+    ],
     icon: "AlertCircle",
     color: "from-orange-500 to-red-500",
     realisations: [
@@ -80,6 +94,11 @@ export const competences: Competence[] = [
     title: "Développer la présence en ligne de l'organisation",
     description:
       "Valoriser l'image de l'organisation sur les médias numériques, référencer les services en ligne, mesurer leur visibilité, assurer la conformité RGPD.",
+    officialBullets: [
+      "Participer à la valorisation de l'image de l'organisation sur les médias numériques en tenant compte du cadre juridique et des enjeux économiques",
+      "Référencer les services en ligne de l'organisation et mesurer leur visibilité",
+      "Participer à l'évolution d'un site Web exploitant les données de l'organisation",
+    ],
     icon: "Globe",
     color: "from-green-500 to-emerald-500",
     realisations: [
@@ -112,6 +131,11 @@ export const competences: Competence[] = [
     title: "Travailler en mode projet",
     description:
       "Analyser les objectifs et modalités d'organisation d'un projet, planifier les activités, évaluer les indicateurs de suivi et analyser les écarts.",
+    officialBullets: [
+      "Analyser les objectifs et les modalités d'organisation d'un projet",
+      "Planifier les activités",
+      "Évaluer les indicateurs de suivi d'un projet et analyser les écarts",
+    ],
     icon: "LayoutGrid",
     color: "from-purple-500 to-violet-500",
     realisations: [
@@ -151,6 +175,11 @@ export const competences: Competence[] = [
     title: "Mettre à disposition des utilisateurs un service informatique",
     description:
       "Réaliser les tests d'intégration et d'acceptation d'un service, déployer un service, accompagner les utilisateurs dans sa mise en place.",
+    officialBullets: [
+      "Réaliser les tests d'intégration et d'acceptation d'un service",
+      "Déployer un service",
+      "Accompagner les utilisateurs dans la mise en place d'un service",
+    ],
     icon: "Rocket",
     color: "from-pink-500 to-rose-500",
     realisations: [
@@ -190,6 +219,12 @@ export const competences: Competence[] = [
     title: "Organiser son développement professionnel",
     description:
       "Mettre en place son environnement d'apprentissage personnel, mettre en œuvre des outils et stratégies de veille informationnelle, gérer son identité professionnelle, développer son projet professionnel.",
+    officialBullets: [
+      "Mettre en place son environnement d'apprentissage personnel",
+      "Mettre en œuvre des outils et stratégies de veille informationnelle",
+      "Gérer son identité professionnelle",
+      "Développer son projet professionnel",
+    ],
     icon: "TrendingUp",
     color: "from-yellow-500 to-amber-500",
     realisations: [
@@ -223,3 +258,14 @@ export const competences: Competence[] = [
     ],
   },
 ];
+
+export const competenceById = (id: string): Competence | undefined =>
+  competences.find((c) => c.id === id);
+
+export const realisationFor = (
+  competenceId: string,
+  projectId: string
+): Realisation | undefined =>
+  competences
+    .find((c) => c.id === competenceId)
+    ?.realisations.find((r) => r.projectId === projectId);
