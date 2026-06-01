@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>E5 — Maxime Mansiet — Parcours de professionnalisation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================
+   E5 — style suisse, quasi-monochrome, motion mesuré.
+   Registre parcours. Puces sur slide, phrases dans les notes.
+   Schémas sobres : matrice de couverture, pipeline, frise, roadmap.
+   ========================================================= */
+:root{
+  --paper:#f4f3ee; --ink:#17171b; --ink-soft:#6c6c74; --line:#d8d6cd;
+  --accent:#b1402f;
+  --font:'Geist',-apple-system,sans-serif;
+  --mono:'Geist Mono',ui-monospace,monospace;
+  --margin: clamp(1.4rem, 6.5vw, 7.5rem);
+  --display: clamp(1.9rem, 6vw, 5rem);
+  --sub: clamp(0.98rem, 1.9vw, 1.45rem);
+  --body: clamp(0.9rem, 1.38vw, 1.15rem);
+  --label: clamp(0.64rem, 0.95vw, 0.8rem);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow-x:hidden;}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;}
+
+.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;position:relative;display:flex;}
+.frame{flex:1;display:flex;flex-direction:column;padding:clamp(1.4rem,4vh,3rem) var(--margin);max-height:100%;position:relative;z-index:1;}
+
+/* filigrane (grand numéro de compétence) */
+.wm{position:absolute;right:clamp(.5rem,3vw,3.5rem);bottom:clamp(-1rem,-1vh,0rem);font-family:var(--mono);font-weight:600;font-size:clamp(7rem,26vw,22rem);line-height:.8;color:rgba(23,23,27,.038);z-index:0;pointer-events:none;letter-spacing:-.04em;user-select:none;}
+
+.meta{display:flex;align-items:baseline;gap:1.3rem;font-family:var(--mono);font-size:var(--label);letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);}
+.meta .idx{color:var(--accent);font-weight:500;}
+.meta .sec{color:var(--ink);}
+.meta .tot{margin-left:auto;}
+.meta-rule{height:1px;background:var(--line);transform:scaleX(0);transform-origin:left;transition:transform 1.1s var(--ease) .15s;margin-top:clamp(.6rem,1.2vh,.95rem);}
+.slide.visible .meta-rule{transform:scaleX(1);}
+
+.body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(.75rem,2.1vh,1.6rem);}
+.display{font-weight:600;font-size:var(--display);line-height:.99;letter-spacing:-.025em;max-width:20ch;}
+.display .ln{display:block;overflow:hidden;}
+.display .ln>span{display:block;transform:translateY(112%);transition:transform .85s var(--ease);}
+.slide.visible .display .ln:nth-child(1)>span{transition-delay:.16s;}
+.slide.visible .display .ln:nth-child(2)>span{transition-delay:.26s;}
+.slide.visible .display .ln>span{transform:translateY(0);}
+.sub{font-size:var(--sub);color:var(--ink-soft);font-weight:400;max-width:52ch;line-height:1.4;}
+.sub b{color:var(--ink);font-weight:500;}
+
+.fade{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.slide.visible .fade{opacity:1;transform:none;}
+.slide.visible .d1{transition-delay:.3s;}.slide.visible .d2{transition-delay:.38s;}
+.slide.visible .d3{transition-delay:.46s;}.slide.visible .d4{transition-delay:.54s;}
+.slide.visible .d5{transition-delay:.62s;}.slide.visible .d6{transition-delay:.7s;}
+
+.foot{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;font-family:var(--mono);font-size:var(--label);letter-spacing:.07em;color:var(--ink-soft);}
+
+/* puces */
+.lines{display:flex;flex-direction:column;}
+.lines .li{padding:clamp(.45rem,1.3vh,.85rem) 0;border-top:1px solid var(--line);font-size:var(--body);line-height:1.4;max-width:66ch;}
+.lines .li:last-child{border-bottom:1px solid var(--line);}
+.lines .li b{font-weight:500;color:var(--ink);}
+
+/* frise horizontale (parcours) */
+.htl{display:flex;align-items:flex-start;margin-top:.4rem;}
+.htl .seg{flex:1 1 0;min-width:92px;position:relative;padding:1.25rem .5rem 0 0;}
+.htl .seg .dot{position:absolute;top:0;left:0;width:9px;height:9px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .5s var(--ease);}
+.slide.visible .htl .seg .dot{transform:scale(1);}
+.htl .seg:nth-child(2) .dot{transition-delay:.1s;}.htl .seg:nth-child(3) .dot{transition-delay:.2s;}
+.htl .seg:nth-child(4) .dot{transition-delay:.3s;}.htl .seg:nth-child(5) .dot{transition-delay:.4s;}
+.htl .seg:nth-child(6) .dot{transition-delay:.5s;}.htl .seg:nth-child(7) .dot{transition-delay:.6s;}
+.htl .seg::before{content:"";position:absolute;top:4px;left:9px;right:0;height:1px;background:var(--line);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);}
+.slide.visible .htl .seg::before{transform:scaleX(1);}
+.htl .seg:last-child::before{display:none;}
+.htl .d{font-family:var(--mono);font-size:var(--label);color:var(--ink-soft);letter-spacing:.04em;}
+.htl .l{font-size:clamp(.82rem,1.25vw,1.05rem);margin-top:.25rem;font-weight:500;}
+
+/* matrice de couverture (réalisations x compétences) */
+.matrix{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(6,minmax(0,1fr));border-top:1px solid var(--line);}
+.matrix>div{border-bottom:1px solid var(--line);padding:clamp(.4rem,1.2vh,.7rem) .3rem;display:flex;align-items:center;}
+.matrix .ch{justify-content:center;font-family:var(--mono);font-size:var(--label);color:var(--accent);letter-spacing:.06em;}
+.matrix .cr{font-weight:500;font-size:clamp(.84rem,1.25vw,1.05rem);}
+.matrix .cell{justify-content:center;}
+.matrix .dot{width:9px;height:9px;border-radius:50%;background:var(--ink);transform:scale(0);transition:transform .45s var(--ease);}
+.slide.visible .matrix .dot{transform:scale(1);}
+.matrix .r1 .dot{transition-delay:.18s;}.matrix .r2 .dot{transition-delay:.26s;}.matrix .r3 .dot{transition-delay:.34s;}
+.matrix .r4 .dot{transition-delay:.42s;}.matrix .r5 .dot{transition-delay:.5s;}.matrix .r6 .dot{transition-delay:.58s;}
+.matrix .klyx .dot{background:var(--accent);}
+
+/* pipeline (déploiement, C5) */
+.pipe{display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;margin-top:.3rem;}
+.pipe .node{font-family:var(--mono);font-size:clamp(.64rem,1vw,.8rem);padding:.45em .7em;border:1px solid var(--line);border-radius:7px;background:#fbfaf6;white-space:nowrap;opacity:0;transform:translateY(8px);transition:opacity .5s var(--ease),transform .5s var(--ease);}
+.slide.visible .pipe .node{opacity:1;transform:none;}
+.pipe .node:nth-child(3){transition-delay:.08s;}.pipe .node:nth-child(5){transition-delay:.16s;}
+.pipe .node:nth-child(7){transition-delay:.24s;}.pipe .node:nth-child(9){transition-delay:.32s;}.pipe .node:nth-child(11){transition-delay:.4s;}
+.pipe .ar{width:clamp(10px,1.8vw,24px);height:1px;background:var(--ink-soft);flex:0 0 auto;transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease);}
+.slide.visible .pipe .ar{transform:scaleX(1);}
+.pipe .node.key{border-color:var(--accent);color:var(--ink);}
+
+/* nav */
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:9000;transition:width .15s linear;}
+.dots{position:fixed;right:clamp(1rem,2.2vw,1.8rem);top:50%;transform:translateY(-50%);z-index:9000;display:flex;flex-direction:column;gap:.55rem;}
+.dots button{width:7px;height:7px;border:1px solid var(--ink-soft);border-radius:50%;background:transparent;cursor:pointer;padding:0;transition:.25s;}
+.dots button.on{background:var(--ink);border-color:var(--ink);transform:scale(1.15);}
+.hint{position:fixed;bottom:clamp(.7rem,1.6vh,1.2rem);left:50%;transform:translateX(-50%);z-index:9000;font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;color:var(--ink-soft);}
+
+/* notes orateur (N) */
+#notes{position:fixed;left:50%;bottom:clamp(2rem,5vh,3.4rem);transform:translateX(-50%) translateY(12px);z-index:9500;width:min(80vw,820px);max-height:36vh;overflow:auto;background:rgba(20,20,24,.96);color:#ece9e2;border-radius:12px;padding:clamp(.8rem,1.6vw,1.2rem) clamp(1rem,2vw,1.5rem);font-size:clamp(.82rem,1.3vw,1.02rem);line-height:1.5;box-shadow:0 24px 60px -18px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;}
+#notes.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);}
+#notes .nh{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem;}
+
+/* édition (E) */
+.edit-hotzone{position:fixed;top:0;left:0;width:80px;height:80px;z-index:10000;cursor:pointer;}
+.edit-toggle{position:fixed;top:14px;left:14px;z-index:10001;width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:16px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;}
+.edit-toggle.show,.edit-toggle.active{opacity:1;pointer-events:auto;}
+.edit-toggle.active{border-color:var(--accent);}
+.edit-bar{position:fixed;top:14px;left:62px;z-index:10001;display:none;gap:8px;}
+.edit-bar.show{display:flex;}
+.edit-bar button{font-family:var(--mono);font-size:.72rem;padding:.5em .8em;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;}
+.edit-bar button:hover{border-color:var(--accent);}
+body.editing [data-edit]{outline:1px dashed rgba(177,64,47,.5);outline-offset:3px;border-radius:2px;}
+body.editing [data-edit]:focus{outline:2px solid var(--accent);}
+
+@media (max-height:600px){:root{--display:clamp(1.5rem,5vw,2.4rem);}.hint{display:none;}.wm{display:none;}}
+@media (max-width:680px){.matrix{font-size:.8rem;}.htl{flex-wrap:wrap;}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.001ms !important;}.display .ln>span{transform:none;}.meta-rule,.htl .seg::before,.pipe .ar{transform:none;}html{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+<div class="progress" id="pg"></div>
+<nav class="dots" id="dots"></nav>
+<div class="hint">défiler &middot; flèches &middot; N notes &middot; E éditer</div>
+
+<div class="edit-hotzone" aria-hidden="true"></div>
+<button class="edit-toggle" id="editToggle" title="Mode édition (E)">✏</button>
+<div class="edit-bar" id="editBar"><button id="saveBtn">Exporter</button><button id="resetBtn">Réinitialiser</button></div>
+<div id="notes"><div class="nh">Notes orateur — touche N</div><div id="notes-body"></div></div>
+
+<main id="deck">
+
+  <!-- 1 — TITRE -->
+  <section class="slide" data-notes="≈20s. Posé. Me présenter et annoncer le plan : qui je suis, mon parcours, et comment j'ai acquis les six compétences du Bloc 1. Le portfolio est mon support, j'y reviendrai en direct.">
+    <div class="frame">
+      <div class="meta"><span class="sec" data-edit>BTS SIO &middot; Option SLAM</span><span class="tot" data-edit>Épreuve E5 &middot; 2026</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h1 class="display"><span class="ln"><span data-edit>Maxime Mansiet</span></span></h1>
+        <p class="sub fade d1" data-edit>Parcours de professionnalisation, Bloc 1.</p>
+      </div>
+      <div class="foot fade d2"><span data-edit>EPSI Bordeaux, 2024-2026</span><span data-edit>e5.maximemansiet.fr</span></div>
+    </div>
+  </section>
+
+  <!-- 2 — QUI JE SUIS -->
+  <section class="slide" data-notes="≈1min15. J'ai 19 ans, en deuxième année de BTS SIO SLAM à l'EPSI Bordeaux. Passionné de parkour, au point d'avoir co-fondé une association où je l'encadre. Dans la tech, ce qui me passionne c'est l'identité numérique et la protection de la vie privée, et c'est devenu mon métier chez Verana. Ce qui m'a amené au développement, c'est le plaisir de résoudre des problèmes logiques et l'envie de construire des choses utiles.">
+    <div class="frame">
+      <div class="meta"><span class="idx">01</span><span class="sec" data-edit>Qui je suis</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Qui je suis.</span></span></h2>
+        <p class="sub fade d1" data-edit>19 ans &middot; BTS SIO SLAM &middot; EPSI Bordeaux</p>
+        <div class="lines">
+          <div class="li fade d2" data-edit><b>Parkour</b>, que je pratique et que j'encadre dans mon association</div>
+          <div class="li fade d3" data-edit>Passionné d'<b>identité numérique</b> et de <b>protection de la vie privée</b></div>
+          <div class="li fade d4" data-edit>Venu au code par goût de la <b>logique</b> et par envie de construire utile</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 — PARCOURS (frise horizontale) -->
+  <section class="slide" data-notes="≈1min. Dérouler la continuité : depuis 2024, ma formation, mon auto-entreprise Klyx créée en avril 2025, deux stages (Reciproq puis Hop Hop Immo), un poste de développeur chez Verana, et la co-fondation de mon association. C'est ce parcours qui m'a fait toucher les six compétences. Klyx en est le fil conducteur, il en couvre cinq à lui seul.">
+    <div class="frame">
+      <div class="meta"><span class="idx">02</span><span class="sec" data-edit>Mon parcours</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Mon parcours</span></span><span class="ln"><span data-edit>de professionnalisation.</span></span></h2>
+        <p class="sub fade d1" data-edit>Deux ans en continu, entre formation, entreprise et association.</p>
+        <div class="htl fade d2">
+          <div class="seg"><span class="dot"></span><div class="d">OCT 2024</div><div class="l" data-edit>GDG Bordeaux</div></div>
+          <div class="seg"><span class="dot"></span><div class="d">AVR 2025</div><div class="l" data-edit>Klyx, mon agence</div></div>
+          <div class="seg"><span class="dot"></span><div class="d">2025</div><div class="l" data-edit>Reciproq, stage</div></div>
+          <div class="seg"><span class="dot"></span><div class="d">JUIL 2025</div><div class="l" data-edit>PKBA</div></div>
+          <div class="seg"><span class="dot"></span><div class="d">SEPT 2025</div><div class="l" data-edit>Verana</div></div>
+          <div class="seg"><span class="dot"></span><div class="d">2026</div><div class="l" data-edit>Hop Hop Immo, stage</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 — MATRICE DE COUVERTURE -->
+  <section class="slide" data-notes="≈40s. La preuve que je couvre tout le Bloc 1. Mon agence Klyx, en haut, couvre cinq des six compétences à elle seule, c'est mon fil conducteur. Verana apporte la sixième, la gestion du patrimoine. Le reste vient de l'association, des stages et de mes projets. Tout est tracé dans mon tableau de synthèse, que le jury peut suivre sur le portfolio.">
+    <div class="frame">
+      <div class="meta"><span class="idx">03</span><span class="sec" data-edit>Couverture du Bloc 1</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Couvrir les six</span></span><span class="ln"><span data-edit>compétences.</span></span></h2>
+        <div class="matrix fade d1">
+          <div></div>
+          <div class="ch">C1</div><div class="ch">C2</div><div class="ch">C3</div><div class="ch">C4</div><div class="ch">C5</div><div class="ch">C6</div>
+
+          <div class="cr klyx">Klyx</div>
+          <div class="cell klyx r1"></div><div class="cell klyx r1"><span class="dot"></span></div><div class="cell klyx r1"><span class="dot"></span></div><div class="cell klyx r1"><span class="dot"></span></div><div class="cell klyx r1"><span class="dot"></span></div><div class="cell klyx r1"><span class="dot"></span></div>
+
+          <div class="cr">Verana</div>
+          <div class="cell r2"><span class="dot"></span></div><div class="cell r2"></div><div class="cell r2"></div><div class="cell r2"><span class="dot"></span></div><div class="cell r2"><span class="dot"></span></div><div class="cell r2"></div>
+
+          <div class="cr">Hop Hop Immo</div>
+          <div class="cell r3"></div><div class="cell r3"><span class="dot"></span></div><div class="cell r3"><span class="dot"></span></div><div class="cell r3"><span class="dot"></span></div><div class="cell r3"><span class="dot"></span></div><div class="cell r3"></div>
+
+          <div class="cr">PKBA</div>
+          <div class="cell r4"><span class="dot"></span></div><div class="cell r4"></div><div class="cell r4"><span class="dot"></span></div><div class="cell r4"><span class="dot"></span></div><div class="cell r4"><span class="dot"></span></div><div class="cell r4"><span class="dot"></span></div>
+
+          <div class="cr">Reciproq</div>
+          <div class="cell r5"></div><div class="cell r5"><span class="dot"></span></div><div class="cell r5"></div><div class="cell r5"><span class="dot"></span></div><div class="cell r5"><span class="dot"></span></div><div class="cell r5"></div>
+
+          <div class="cr">OpenClaw</div>
+          <div class="cell r6"></div><div class="cell r6"></div><div class="cell r6"></div><div class="cell r6"></div><div class="cell r6"><span class="dot"></span></div><div class="cell r6"><span class="dot"></span></div>
+        </div>
+        <p class="sub fade d3" data-edit style="font-size:var(--body);">Klyx, mon fil conducteur, couvre cinq des six compétences.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 — C1 -->
+  <section class="slide" data-notes="≈1min, mesuré. Chez Verana, l'infrastructure est entièrement versionnée : images Docker, manifests Kubernetes et charts Helm dans Git, avec des accès par rôle. Pour mon association, j'ai recensé les ressources numériques, défini les droits par rôle, et mis en place les sauvegardes avec une restauration testée. Si on me pousse sur l'outil d'inventaire, c'est Git plus les manifests. Rester factuel, puis enchaîner.">
+    <div class="wm" aria-hidden="true">C1</div>
+    <div class="frame">
+      <div class="meta"><span class="idx">04</span><span class="sec" data-edit>Compétence 1</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Gérer le</span></span><span class="ln"><span data-edit>patrimoine informatique.</span></span></h2>
+        <p class="sub fade d1" data-edit>Recenser, sécuriser, sauvegarder.</p>
+        <div class="lines">
+          <div class="li fade d2" data-edit><b>Verana</b> &middot; Docker, Kubernetes, Helm versionnés dans Git, accès RBAC</div>
+          <div class="li fade d3" data-edit><b>PKBA</b> &middot; inventaire des ressources, droits par rôle, sauvegardes testées</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 — C2 -->
+  <section class="slide" data-notes="≈1min, mesuré. Sur mes projets clients Klyx, je gère les demandes par tickets (GitHub Issues, Linear), avec une méthode : reproduire, isoler la cause, corriger, vérifier. Chez Verana, on supervise avec Grafana, ce qui permet de détecter un incident avant l'utilisateur. Je distingue maintenance corrective, adaptative et évolutive. Si on me parle de GLPI, assumer l'échelle TPE/association où l'issue tracker suffit, mais montrer que je connais le concept.">
+    <div class="wm" aria-hidden="true">C2</div>
+    <div class="frame">
+      <div class="meta"><span class="idx">05</span><span class="sec" data-edit>Compétence 2</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Répondre</span></span><span class="ln"><span data-edit>aux incidents.</span></span></h2>
+        <p class="sub fade d1" data-edit>Détecter, diagnostiquer, résoudre.</p>
+        <div class="lines">
+          <div class="li fade d2" data-edit><b>Klyx</b> &middot; tickets clients, méthode de diagnostic (GitHub, Linear)</div>
+          <div class="li fade d3" data-edit><b>Verana</b> &middot; monitoring Grafana pour détecter et alerter</div>
+          <div class="li fade d4" data-edit><b>Hoppy</b> &middot; suivi des erreurs en production</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 — C3 -->
+  <section class="slide" data-notes="≈1min. La compétence c'est valoriser une image et savoir la mesurer, donc les chiffres ont leur place. Pour mes clients Klyx, en moyenne +80% de trafic organique. Chez Hop Hop Immo, refonte de la page d'accueil et SEO, trafic triplé en trois mois. Je mesure avec la Search Console et Analytics. Je gère le juridique : RGPD, mentions légales, cookies. Savoir donner la différence éditeur / hébergeur si on me la demande.">
+    <div class="wm" aria-hidden="true">C3</div>
+    <div class="frame">
+      <div class="meta"><span class="idx">06</span><span class="sec" data-edit>Compétence 3</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Développer</span></span><span class="ln"><span data-edit>la présence en ligne.</span></span></h2>
+        <p class="sub fade d1" data-edit>Valoriser, et mesurer la visibilité.</p>
+        <div class="lines">
+          <div class="li fade d2" data-edit><b>Klyx</b> &middot; +80% de trafic en moyenne pour mes clients</div>
+          <div class="li fade d3" data-edit><b>Hop Hop Immo</b> &middot; trafic triplé en trois mois (refonte SEO)</div>
+          <div class="li fade d4" data-edit>RGPD, mentions légales et conformité sur chaque site</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 — C4 -->
+  <section class="slide" data-notes="≈1min. Klyx, c'est moi seul de bout en bout : cinq projets pilotés en agile, sprints, points clients, rétrospectives. Chez Verana, équipe internationale en remote, specs et code reviews ; ma contribution personnelle, c'est le Visualizer et l'infrastructure de déploiement. Point clé : je connais l'agile ET le prédictif (cycle en V), et je sais quand choisir. Toujours préciser MA part dans un travail d'équipe.">
+    <div class="wm" aria-hidden="true">C4</div>
+    <div class="frame">
+      <div class="meta"><span class="idx">07</span><span class="sec" data-edit>Compétence 4</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Travailler</span></span><span class="ln"><span data-edit>en mode projet.</span></span></h2>
+        <p class="sub fade d1" data-edit>Piloter, planifier, rendre compte de ma part.</p>
+        <div class="lines">
+          <div class="li fade d2" data-edit><b>Klyx</b> &middot; cinq projets clients pilotés en agile</div>
+          <div class="li fade d3" data-edit><b>Verana</b> &middot; une équipe internationale, à distance</div>
+          <div class="li fade d4" data-edit>Agile, ou prédictif (cycle en V) selon le périmètre</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 — C5 (pipeline technique) -->
+  <section class="slide" data-notes="≈1min30, mon point fort, dérouler avec assurance et précision. Mon pipeline : du code, des tests en intégration continue avec GitHub Actions, une image Docker, un déploiement Kubernetes packagé en Helm, la mise en production, et la supervision avec Grafana, avec une stratégie de rollback. Côté tests, je distingue unitaire, intégration et acceptation : sur Reciproq, recette avec le Product Owner et rapport. Hoppy et Concieragent sont en production et documentés. C'est ici que le jury technique va creuser, je suis prêt à dérouler.">
+    <div class="wm" aria-hidden="true">C5</div>
+    <div class="frame">
+      <div class="meta"><span class="idx">08</span><span class="sec" data-edit>Compétence 5</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Mettre un service</span></span><span class="ln"><span data-edit>en production.</span></span></h2>
+        <p class="sub fade d1" data-edit>Mon pipeline de déploiement, du code à la supervision.</p>
+        <div class="pipe fade d2">
+          <span class="node" data-edit>Code</span><span class="ar"></span>
+          <span class="node" data-edit>CI/CD GitHub Actions</span><span class="ar"></span>
+          <span class="node" data-edit>Docker</span><span class="ar"></span>
+          <span class="node" data-edit>Kubernetes / Helm</span><span class="ar"></span>
+          <span class="node key" data-edit>Production</span><span class="ar"></span>
+          <span class="node" data-edit>Grafana</span>
+        </div>
+        <div class="lines">
+          <div class="li fade d4" data-edit><b>Tests</b> &middot; intégration et acceptation, rapport de recette (Reciproq)</div>
+          <div class="li fade d5" data-edit><b>En production</b> &middot; Hoppy, Concieragent, documentés et accompagnés</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 — C6 -->
+  <section class="slide" data-notes="≈1min, ma compétence la plus forte, finir haut. J'entreprends : mon agence Klyx et la co-fondation de mon association. Ma veille est outillée et quotidienne : OpenClaw, un agrégateur que j'ai développé, et le GDG Bordeaux. Je me forme en continu : CS50 de Harvard, EFSET C2 en anglais, et je publie en open source, mon SDK est sur npm. Mon identité professionnelle est visible sur LinkedIn et GitHub. Enchaîner sur le projet professionnel.">
+    <div class="wm" aria-hidden="true">C6</div>
+    <div class="frame">
+      <div class="meta"><span class="idx">09</span><span class="sec" data-edit>Compétence 6</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Organiser mon</span></span><span class="ln"><span data-edit>développement pro.</span></span></h2>
+        <p class="sub fade d1" data-edit>Apprendre, veiller, entreprendre.</p>
+        <div class="lines">
+          <div class="li fade d2" data-edit><b>Entreprendre</b> &middot; Klyx, et la co-fondation de PKBA</div>
+          <div class="li fade d3" data-edit><b>Veiller</b> &middot; OpenClaw chaque matin, le GDG Bordeaux</div>
+          <div class="li fade d4" data-edit><b>Me former</b> &middot; CS50, EFSET C2, l'open source (npm)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 — PROJET PRO (roadmap) -->
+  <section class="slide" data-notes="≈45s. Mon projet est clair. Dès septembre, alternance chez Hop Hop Immo, dans la continuité de mon stage. Objectif : financer des études à l'étranger, au Canada ou aux États-Unis. Et en parallèle, continuer à développer mon entreprise, Klyx, pour gagner en autonomie et en liberté. Le BTS, c'est la première marche.">
+    <div class="frame">
+      <div class="meta"><span class="idx">10</span><span class="sec" data-edit>Projet professionnel</span><span class="tot">/ 12</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Mon projet</span></span><span class="ln"><span data-edit>professionnel.</span></span></h2>
+        <p class="sub fade d1" data-edit>Une alternance, des études, mon entreprise.</p>
+        <div class="pipe fade d2">
+          <span class="node key" data-edit>Sept. 2026 &middot; Alternance Hop Hop Immo</span><span class="ar"></span>
+          <span class="node" data-edit>Études au Canada / États-Unis</span><span class="ar"></span>
+          <span class="node" data-edit>Faire grandir Klyx, gagner en liberté</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 — MERCI -->
+  <section class="slide" data-notes="≈15s. Remercier, et laisser le portfolio affiché pour la phase de questions.">
+    <div class="frame">
+      <div class="meta"><span class="sec" data-edit>Maxime Mansiet</span><span class="tot" data-edit>BTS SIO SLAM &middot; E5</span></div>
+      <div class="meta-rule"></div>
+      <div class="body">
+        <h2 class="display"><span class="ln"><span data-edit>Merci.</span></span></h2>
+        <p class="sub fade d1" data-edit>Le portfolio reste à votre disposition pour vos questions.</p>
+      </div>
+      <div class="foot fade d2"><span data-edit>e5.maximemansiet.fr</span><span></span></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* === état + restauration AVANT toute référence aux slides ===
+   (sinon, après une sauvegarde, on pilotait des noeuds détachés -> nav cassée) */
+const deck=document.getElementById('deck');
+const KEY='e5deck:v4';
+let editOn=false, saveT=null, notesOn=false, cur=0;
+
+/* on enregistre une version NETTOYÉE : pas de contenteditable ni de classes transitoires */
+function cleanHTML(src){const t=document.createElement('div');t.innerHTML=src;t.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));t.querySelectorAll('.visible').forEach(el=>el.classList.remove('visible'));return t.innerHTML;}
+function save(){try{localStorage.setItem(KEY,cleanHTML(deck.innerHTML));}catch(e){}}
+try{const s=localStorage.getItem(KEY);if(s)deck.innerHTML=cleanHTML(s);}catch(e){}
+
+const slides=[...deck.querySelectorAll('.slide')];
+const dots=document.getElementById('dots');
+const pg=document.getElementById('pg');
+const notesPanel=document.getElementById('notes');
+const notesBody=document.getElementById('notes-body');
+
+slides.forEach((_,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Diapositive '+(i+1));b.onclick=()=>slides[i].scrollIntoView({behavior:'smooth'});dots.appendChild(b);});
+const dotEls=[...dots.children];
+
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{
+  if(e.isIntersecting&&e.intersectionRatio>0.5){e.target.classList.add('visible');cur=slides.indexOf(e.target);dotEls.forEach((d,i)=>d.classList.toggle('on',i===cur));notesBody.textContent=e.target.dataset.notes||'—';}
+});},{threshold:[0.5,0.75]});
+slides.forEach(s=>io.observe(s));
+if(slides[0]){slides[0].classList.add('visible');notesBody.textContent=slides[0].dataset.notes||'—';}
+
+addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&editOn){toggleEdit();return;}
+  const inText=e.target&&e.target.getAttribute&&e.target.getAttribute('contenteditable')==='true';
+  if((e.key==='e'||e.key==='E')&&!inText){e.preventDefault();toggleEdit();return;}
+  if(editOn)return; /* en mode édition : on tape, on ne navigue pas */
+  if(e.key==='n'||e.key==='N'){notesOn=!notesOn;notesPanel.classList.toggle('show',notesOn);return;}
+  if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();slides[Math.min(cur+1,slides.length-1)].scrollIntoView({behavior:'smooth'});}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();slides[Math.max(cur-1,0)].scrollIntoView({behavior:'smooth'});}
+});
+addEventListener('scroll',()=>{const m=deck.scrollHeight-innerHeight;pg.style.width=(m>0?scrollY/m*100:0)+'%';},{passive:true});
+
+const oninput=()=>{clearTimeout(saveT);saveT=setTimeout(save,350);};
+function toggleEdit(){
+  editOn=!editOn;
+  document.body.classList.toggle('editing',editOn);
+  const tg=document.getElementById('editToggle');
+  tg.classList.toggle('active',editOn);tg.classList.add('show');
+  document.getElementById('editBar').classList.toggle('show',editOn);
+  deck.querySelectorAll('[data-edit]').forEach(el=>{
+    if(editOn){el.setAttribute('contenteditable','true');el.addEventListener('input',oninput);}
+    else{el.removeAttribute('contenteditable');el.removeEventListener('input',oninput);}
+  });
+  if(!editOn){const a=document.activeElement;if(a&&a.blur)a.blur();save();}
+}
+(function(){
+  const hz=document.querySelector('.edit-hotzone'),tg=document.getElementById('editToggle');let h=null;
+  hz.addEventListener('mouseenter',()=>{clearTimeout(h);tg.classList.add('show');});
+  hz.addEventListener('mouseleave',()=>{h=setTimeout(()=>{if(!editOn)tg.classList.remove('show');},400);});
+  tg.addEventListener('mouseenter',()=>clearTimeout(h));
+  tg.addEventListener('mouseleave',()=>{h=setTimeout(()=>{if(!editOn)tg.classList.remove('show');},400);});
+  tg.addEventListener('click',toggleEdit);hz.addEventListener('click',toggleEdit);
+  document.getElementById('saveBtn').addEventListener('click',()=>{if(editOn)toggleEdit();save();const html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;const b=new Blob([html],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='E5-presentation.html';a.click();URL.revokeObjectURL(a.href);});
+  document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('Réinitialiser le texte ?')){localStorage.removeItem(KEY);location.reload();}});
+})();
+</script>
+</body>
+</html>
